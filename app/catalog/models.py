@@ -1,24 +1,5 @@
-from flask import Flask, request, render_template, session
-from flask_sqlalchemy import SQLAlchemy
+from app import db
 from datetime import datetime
-
-app = Flask(__name__)
-
-app.config.update(
-    SECRET_KEY='topsecret',
-    SQLALCHEMY_DATABASE_URI='postgresql://postgres:Maura1387!@localhost/catalog_db',
-    SQLALCHEMY_TRACK_MODIFICATIONS=True
-)
-
-db = SQLAlchemy(app)
-
-@app.route('/session')
-def session_data():
-    if 'name' not in session:
-        session['name'] = 'chas'
-    return render_template('session.html', session=session, name=session['name'])
-
-
 
 class Publication(db.Model):
     __tablename__ = 'publication'
@@ -59,8 +40,3 @@ class Book(db.Model):
 
     def __repr__(self):
         return '{} by {}'.format(self.title, self.author)
-
-
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
